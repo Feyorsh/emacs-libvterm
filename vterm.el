@@ -1720,7 +1720,10 @@ If N is negative backward-line from end of buffer."
                   (progn
                     (when (file-directory-p dir)
                       (setq directory (file-name-as-directory dir))))
-                (setq directory (file-name-as-directory (concat "/-:" path))))))
+                (let ((method (if (tramp-tramp-file-p default-directory)
+                                  (tramp-file-name-method (tramp-dissect-file-name default-directory))
+                                tramp-default-method-marker)))
+                  (setq directory (file-name-as-directory (concat tramp-prefix-format method tramp-postfix-method-format path)))))))
         (when (file-directory-p path)
           (setq directory (file-name-as-directory path))))
       directory)))
